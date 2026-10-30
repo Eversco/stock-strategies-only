@@ -27,3 +27,4 @@ web/node_modules/
 web/.next/
 web/tsconfig.tsbuildinfo
 web/.env*.local
+/strategies

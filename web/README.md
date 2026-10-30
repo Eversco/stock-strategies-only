@@ -6,7 +6,7 @@ Next.js + Tailwind 前端，後端是 `api/` 下的 FastAPI。
 
 ```bash
 # 1. 後端（在專案根目錄）
-uv sync                              # 安裝新增的 fastapi / pydantic / google-generativeai
+uv sync                              # 安裝新增的 fastapi / pydantic / google-genai
 # --reload-include 只看 Python，避免存策略 JSON 時 server 重啟把 /api/run 切斷
 uv run uvicorn api.main:app --reload --reload-include '*.py' --port 8000
 

@@ -78,21 +78,14 @@ def generate_strategy_with_ai(user_prompt: str, name: Optional[str] = None) -> d
         raise RuntimeError("未設定 GEMINI_API_KEY 環境變數")
 
     try:
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types
     except ImportError as e:
         raise RuntimeError(
-            "缺少 google-generativeai 套件，請 `uv add google-generativeai`"
+            "缺少 google-genai 套件，請 `uv add google-genai`"
         ) from e
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(
-        DEFAULT_MODEL,
-        system_instruction=SYSTEM_PROMPT,
-        generation_config={
-            "temperature": 0.4,
-            "response_mime_type": "application/json",
-        },
-    )
+    client = genai.Client(api_key=api_key)
 
     full_prompt = (
         f"使用者描述：\n{user_prompt}\n\n"
@@ -101,7 +94,15 @@ def generate_strategy_with_ai(user_prompt: str, name: Optional[str] = None) -> d
     if name:
         full_prompt += f" 策略名稱請使用：「{name}」。"
 
-    resp = model.generate_content(full_prompt)
+    resp = client.models.generate_content(
+        model=DEFAULT_MODEL,
+        contents=full_prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+            temperature=0.4,
+            response_mime_type="application/json",
+        ),
+    )
     text = getattr(resp, "text", None) or ""
     data = _extract_json(text)
 

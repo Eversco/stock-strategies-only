@@ -113,7 +113,7 @@ def evaluate(stock_id: str, name: str, strategy: dict | None = None) -> Optional
             "action": action,
             "signal_score": signal_score,
             "components": {
-                "fundamental_pass": fund_pass,
+                "fundamental_pass": bool(fund_pass),
                 "eps_min": min(eps_vals) if eps_vals else None,
                 "roe_min": min(roe_vals) if roe_vals else None,
                 "tech_score": tech_score,
